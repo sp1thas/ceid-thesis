@@ -4,7 +4,9 @@ from itertools import izip
 from nltk.tokenize import RegexpTokenizer
 import nltk.data
 from encodings.utf_8 import decode
+
 '''kanw import ths synarthseis pou exw ylopoihsei ston ypofakelo lib'''
+
 from lib import frequencies, WordsCount, PercentCalc, GetStr, SingleCharFreq, SlangDictionaries, arff
 
 words_count = []    # lista me ton arithmo twn leksewn ana keimeno
@@ -279,11 +281,14 @@ LetterFreq['a'], LetterFreq['b'], LetterFreq['c'], LetterFreq['d'], LetterFreq['
  MostUsedWords['UK'], MostUsedWords['AUS'], MostUsedWords['CAN'], MostUsedWords['NNS'],
  SlanFreq['US'], SlanFreq['UK'], SlanFreq['AUS'],SlanFreq['AUS'] , stextClass)
 print('DONE!')
+
 '''
 del BasicFeatures['TextLen'], textClass, BasicCounters, BasicFeatures, FreqWords, FreqWordsLib, PunctuationsFreq, StrLenCounter, SymbolsFreq
 del LetterFreq, MostUsedWords, avg_sentences_chars, avg_sentences_words, freq_word, hapax_legomena, hapax_dislegomena, ids, total_diff_words, word
 del SlanFreq, SlangDict, nation
-'''print('Eggrafi arxeiou arff')
+'''
+
+print('Eggrafi arxeiou arff')
 arff.dump("result2.arff", output, relation='results', names=header)
 del output, header
 print('DONE!')
