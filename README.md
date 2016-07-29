@@ -11,14 +11,13 @@
 ---
 
 
-### Input csv file template:
-| text ID | text | author's gender | author's age category | author's exact age | social media | thematic area | nationality | other info |
-| -- | -- | -- | -- | -- | -- | -- | -- | -- |
-| 1 | this is a post sample... | M/F | A/B/C/D/E/F | >14 | Facebook/Twiter | Actor/Director | US | something |
-| 2 |  |  |  |  |  |  |  |  |
+### Input .csv file template:
 
 
-Text ID -> unique id for each text
+
+####Text ID:
+- unique id for each text
+
 ####Author's gender:
 - "M" for Male
 - "F" for Female
