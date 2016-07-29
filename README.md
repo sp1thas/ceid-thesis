@@ -5,7 +5,7 @@
 ---
 
 
-**more infos at *main.py***
+**more infos at main.py**
 
 
 ---
