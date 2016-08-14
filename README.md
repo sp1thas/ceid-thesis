@@ -1,10 +1,6 @@
 #Feature extraction for text categorization
 ##Geolocation authorship attribution
 
-
----
-
-
 **more infos at main.py**
 
 
@@ -12,7 +8,7 @@
 
 
 ### Input .csv file template:
-
+![](https://raw.githubusercontent.com/sp1thas/geo-nltk-feature/master/csv-template.png)
 
 
 ####Text ID:
@@ -55,4 +51,4 @@ Based on facebook page categories etc
 - Writer
 
 ####Other infos
-anything else about the author
+- anything else about the author
