@@ -1,8 +1,17 @@
+#   ===================================
+#           arff
+#   ===================================
+__author__ = "Simakis Panagiotis"
+__license__ = "GPL"
+__email__ = "sp1thas@autistici.org"
 
 '''
-    me th synarthsh header() dhmiourgoume ta label twn
-    xarakthristikw sto arxeio arff
+    me th synarthsh header() dhmiourgoume
+    ta label twn xarakthristikw sto
+    arxeio arff
 '''
+#   ===================================
+
 def header():
     return [ 'SymbolsPerChar',
              'PunctuationsPerChar',

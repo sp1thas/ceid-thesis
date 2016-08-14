@@ -1,3 +1,11 @@
+#   ===================================
+#           GetStr
+#   ===================================
+
+__author__ = "Simakis Panagiotis"
+__license__ = "GPL"
+__email__ = "sp1thas@autistici.org"
+
 import codecs
 
 def GetStrValue(DictList):

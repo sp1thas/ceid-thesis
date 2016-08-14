@@ -1,5 +1,13 @@
+#   ===================================
+#               Izip
+#   ===================================
+
+__author__ = "Simakis Panagiotis"
+__license__ = "GPL"
+__email__ = "sp1thas@autistici.org"
+
 '''
-me ayto to script diamorfwnw ti lista me ta data poy gia to arxeio arff 
+    me ayto to script diamorfwnw ti lista me ta data poy gia to arxeio arff
 '''
 from itertools import izip
 

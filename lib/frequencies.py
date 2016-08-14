@@ -1,8 +1,17 @@
+#   ===================================
+__author__ = "Simakis Panagiotis"
+__license__ = "GPL"
+__email__ = "sp1thas@autistici.org"
+#   ===================================
+
+'''
+    synarthsh pou dhmiourgei lista me to katharo keimeno ana ethnikothta
+'''
+
 import sys, codecs
 import nltk.data
 from nltk.tokenize import RegexpTokenizer
 
-'''synarthsh pou dhmiourgei lista me to katharo keimeno ana ethnikothta'''
 def freq_words_nationality(l, write, write_open):
 
     #write = codecs.open("text", "wb", "utf-8")

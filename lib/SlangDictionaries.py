@@ -1,8 +1,13 @@
-'''
-    synarthseis gia th dhmiourgia twn slang leksikwn
-    dhmiourgeite ena leksiko gia kathe mia apo tis 
-    ethnikothtes pou synantame
-'''
+#    =================================================
+#       SlangDictionaries
+#    =================================================
+
+#    synarthseis gia th dhmiourgia twn slang leksikwn
+#    dhmiourgeite ena leksiko gia kathe mia apo tis
+#    ethnikothtes pou synantame
+__author__ = "Simakis Panagiotis"
+__license__ = "GPL"
+__email__ = "sp1thas@autistici.org"
 
 
 ''' americaniko slang leksiko'''

@@ -1,8 +1,17 @@
+#   ===================================
+#           SingleCharFreq
+#   ===================================
+
+__author__ = "Simakis Panagiotis"
+__license__ = "GPL"
+__email__ = "sp1thas@autistici.org"
+
 '''
     Synartisi gia ton ypologismo twn features gia ta shmeia stiksh
     pernei ws orisma to text kai epistrefei ena dictionary me tis
     metriseis gia kathe ena shmeio stiksis
 '''
+
 import PercentCalc, sys
 from nltk.tokenize import RegexpTokenizer
 
