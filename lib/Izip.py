@@ -1,5 +1,5 @@
 '''
-me ayto to script diamorfwnw ti lista me ta data poy gia to arxeio arff
+me ayto to script diamorfwnw ti lista me ta data poy gia to arxeio arff 
 '''
 from itertools import izip
 
