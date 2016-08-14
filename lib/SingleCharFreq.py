@@ -1,4 +1,4 @@
-''' 
+'''
     Synartisi gia ton ypologismo twn features gia ta shmeia stiksh
     pernei ws orisma to text kai epistrefei ena dictionary me tis
     metriseis gia kathe ena shmeio stiksis
@@ -28,10 +28,10 @@ def PunctuationChars(TextCorpus, PunctCounter):
     print('Done')
     return FreqDict
     del FreqDict, TextCorpus, punct, PunctCounter, i
-    
 
 
-''' 
+
+'''
     Synartisi gia ton ypologismo twn features gia ta symvola
     pernei ws orisma to text kai epistrefei ena dictionary me tis
     metriseis gia kathe ena symvolo
@@ -73,8 +73,8 @@ def SymbolChars(TextCorpus, TextLen, SymbolsCounter):
     print('Done')
     return SymbolDict
     del SymbolDict, symbol, TextCorpus, TextLen, SymbolsCounter
-    
-''' 
+
+'''
     Synartisi gia ton ypologismo twn features gia ta grammata
     pernei ws orisma to text kai epistrefei ena dictionary me tis
     metriseis gia kathe ena gramma
@@ -91,7 +91,6 @@ def LetterChars(TextCorpus, LettersCounter):
                 LetterDict[i].append(0.0)
         elif float(LettersCounter[letter]!=float(0)):  #ypologismos ths syxnothtas kathe grammatwn ana keimeno
             LetterDict['a'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[A,a]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
-            LetterDict['a'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[A,a]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
             LetterDict['b'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[B,b]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
             LetterDict['c'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[C,c]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
             LetterDict['d'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[D,d]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
@@ -100,7 +99,7 @@ def LetterChars(TextCorpus, LettersCounter):
             LetterDict['g'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[G,g]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
             LetterDict['h'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[H,h]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
             LetterDict['i'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[i,i]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
-            LetterDict['i'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[J,j]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
+            LetterDict['j'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[J,j]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
             LetterDict['k'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[K,k]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
             LetterDict['l'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[L,l]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
             LetterDict['m'].append(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[M,m]').tokenize(TextCorpus[letter])), LettersCounter[letter]))
