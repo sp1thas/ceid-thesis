@@ -6,26 +6,16 @@ __license__ = "GPL"
 __email__ = "sp1thas@autistici.org"
 #   ===================================
 
-import codecs, sys
+import codecs, sys, arff
 from nltk.tokenize import RegexpTokenizer
 import nltk.data
 from encodings.utf_8 import decode
 
 '''kanw import ths synarthseis pou exw ylopoihsei ston ypofakelo lib'''
-from lib import OutPutArff, frequencies, GetStr, InputFile, Izip, PercentCalc, PunctFreq, SingleCharFreq, SlangDictionaries, str2flt, WordsCount, Features
-words_count = []    # lista me ton arithmo twn leksewn ana keimeno
-spaces_count = []   # lista gia metrima twn kenwn
+from lib import OutPutArff, frequencies, GetStr, InputFile, Izip, PercentCalc, Freq, SingleCharFreq, SlangDictionaries, WordsCount, Features
+
+
 textClass = []
-
-
-avg_word_len = []   # lista gia metrima toy mesou orou toy mhkous twn leksewn
-letters_count = []  # lista gia to metrina twn grammatwn
-letters_count_per_char = []
-short_words_counter = []    # lista gia to metrima twn mikrwn leksewn (<4)
-digits_count = []   # lista gia to metrima twn psifion
-digits_count_per_char = []
-total_chars_in_words = []   # total number of chars in word
-
 text = []   # lista gia to katharo keimeno
 ids = []    # lista gia ta ids
 temp = []
@@ -91,19 +81,19 @@ del csvFile, co
 print('DONE!')
 print 'megethos dataset: ', len(text)
 print('Most used words processing...')
-FreqWordsLib['US'] = frequencies.freq_words_nationality(text_US, write, write_open)
+FreqWordsLib['US'] = Freq.NationalityWords(text_US, write, write_open)
 del text_US
 print('US DONE!')
-FreqWordsLib['AUS'] = frequencies.freq_words_nationality(text_AUS, write, write_open)
+FreqWordsLib['AUS'] = Freq.NationalityWords(text_AUS, write, write_open)
 del text_AUS
 print('AUS DONE!')
-FreqWordsLib['CAN'] = frequencies.freq_words_nationality(text_CAN, write, write_open)
+FreqWordsLib['CAN'] = Freq.NationalityWords(text_CAN, write, write_open)
 del text_CAN
 print('CAN DONE!')
-FreqWordsLib['UK'] = frequencies.freq_words_nationality(text_GBR, write, write_open)
+FreqWordsLib['UK'] = Freq.NationalityWords(text_GBR, write, write_open)
 del text_GBR
 print('UK DONE!')
-FreqWordsLib['NNS'] = frequencies.freq_words_nationality(text_NNS, write, write_open)
+FreqWordsLib['NNS'] = Freq.NationalityWords(text_NNS, write, write_open)
 del text_NNS, temp
 print('NNS DONE')
 print('Removing commons words...')
@@ -261,10 +251,14 @@ print {key: len(value) for key, value in PunctuationsFreq.items()}
 
 print('izip object processing...')
 # me izip pernaw sto output ola ta features pou einai pros eggrafh sto csv
-data = Izip.CreateObj(BasicFeatures, LetterFreq, SymbolsFreq, MostUsedWords, SlanFreq, textClass, PunctuationsFreq)
+data = Izip.NoZipFormat(BasicFeatures, LetterFreq, SymbolsFreq, MostUsedWords, SlanFreq, textClass, PunctuationsFreq)
 print('DONE!')
-
-OutPutArff.Write(header,data)
+print('Eggrafi arxeiou arff')
+DefaultFileName = "resaults.arff"
+print "Default csv file: 'resaults.arff' (Press Enter for default name)"
+FileName = raw_input("Insert arff file name: ") or DefaultFileName #eisagwgh onomatos arxeiou
+arff.dump(FileName, data, relation='results', names=header)
+del data, header, FileName, DefaultFileName
 
 print('DONE!')
 print('TELOS - BE HAPPY :)')

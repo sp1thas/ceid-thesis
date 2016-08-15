@@ -76,7 +76,7 @@ def SymbolChars(TextCorpus, TextLen, SymbolsCounter):
             SymbolDict['15'][symbol]=(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[{]').tokenize(TextCorpus[symbol])),SymbolsCounter[symbol]))
             SymbolDict['16'][symbol]=(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[}]').tokenize(TextCorpus[symbol])),SymbolsCounter[symbol]))
             SymbolDict['17'][symbol]=(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[[]').tokenize(TextCorpus[symbol])),SymbolsCounter[symbol]))
-            SymbolDict['18'][symbol]=(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[]]').tokenize(TextCorpus[symbol])),SymbolsCounter[symbol]))
+            SymbolDict['18'][symbol]=(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[\]]').tokenize(TextCorpus[symbol])),SymbolsCounter[symbol]))
             SymbolDict['19'][symbol]=(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[/]').tokenize(TextCorpus[symbol])),SymbolsCounter[symbol]))
             SymbolDict['20'][symbol]=(PercentCalc.PercentCalc(len(RegexpTokenizer(r"['\']").tokenize(TextCorpus[symbol])),SymbolsCounter[symbol]))
             SymbolDict['21'][symbol]=(PercentCalc.PercentCalc(len(RegexpTokenizer(r'[|]').tokenize(TextCorpus[symbol])),SymbolsCounter[symbol]))
