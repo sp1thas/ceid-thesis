@@ -5,7 +5,30 @@
 
 
 ---
+###Prerequirements:
 
+* **[Python 2.7](https://www.python.org/)**
+
+* **[NLTK](http://www.nltk.org/install.html)**
+
+    - RegexpTokenizer
+
+    - nltk.data
+
+  
+
+* Python Modules
+
+    - [arff](https://pypi.python.org/pypi/arff)
+
+    - [decodes](https://pypi.python.org/pypi/decodes)
+
+    - [unicodecsv](https://pypi.python.org/pypi/unicodecsv)
+
+    - Installation:
+
+          `[sudo] pip install arff decodes unicodecsv`
+---
 
 ### Input .csv file template:
 ![](https://raw.githubusercontent.com/sp1thas/geo-nltk-feature/master/csv-template.png)
