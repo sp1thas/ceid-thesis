@@ -8,7 +8,7 @@ __email__ = "sp1thas@autistici.org"
 
 import codecs
 
-def GetStrValue(DictList):
+def Value(DictList):
     ValueList = []
     for i, j in DictList:
         ValueList.append(i.encode("ascii","ignore"))

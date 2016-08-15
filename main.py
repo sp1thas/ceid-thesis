@@ -12,14 +12,12 @@ import nltk.data
 from encodings.utf_8 import decode
 
 '''kanw import ths synarthseis pou exw ylopoihsei ston ypofakelo lib'''
-from lib import Arff, frequencies, GetStr, InputFile, Izip, PercentCalc, PunctFreq, SingleCharFreq, SlangDictionaries, str2flt, WordsCount, Features
+from lib import OutPutArff, frequencies, GetStr, InputFile, Izip, PercentCalc, PunctFreq, SingleCharFreq, SlangDictionaries, str2flt, WordsCount, Features
 words_count = []    # lista me ton arithmo twn leksewn ana keimeno
-word = []   # lista me tis lekseis ana keimeno
 spaces_count = []   # lista gia metrima twn kenwn
 textClass = []
 
-avg_sentences_chars = []  # lista gia meso oro protasewn os pros toy xarakthres
-avg_sentences_words = []  # lista gia meso oro protasewn os pros tis lekseis
+
 avg_word_len = []   # lista gia metrima toy mesou orou toy mhkous twn leksewn
 letters_count = []  # lista gia to metrina twn grammatwn
 letters_count_per_char = []
@@ -45,10 +43,6 @@ SlangDict['CAN'] = SlangDictionaries.CAN()
 
 SlangDict['UK'] = SlangDictionaries.UK()
 
-total_diff_words = []
-hapax_legomena = []
-hapax_dislegomena = []
-freq_word = []
 write = codecs.open("text", "wb", "utf-8")
 write_open = codecs.open("text", "rb", "utf-8")
 nation = []
@@ -91,6 +85,7 @@ for row in csvFile:
     print "\r",
     co = co+1
 
+freq_word = [0.0]*len(text)
 FreqWordsLib = {'US':[], 'AUS': [], 'CAN': [], 'UK': [], 'NNS': []}
 del csvFile, co
 print('DONE!')
@@ -132,61 +127,64 @@ FreqWordsLib['NNS'] = FreqWordsLib['NNS'].most_common(50)
 
 #kai apo ta antistoixa krataw mono tis lekseis xwris to value
 FreqWords = {'US':[], 'AUS': [], 'CAN': [], 'UK': [], 'NNS': []}
-FreqWords['US'] = GetStr.GetStrValue(FreqWordsLib['US'])
-FreqWords['AUS'] = GetStr.GetStrValue(FreqWordsLib['AUS'])
-FreqWords['CAN'] = GetStr.GetStrValue(FreqWordsLib['CAN'])
-FreqWords['UK'] = GetStr.GetStrValue(FreqWordsLib['UK'])
-FreqWords['NNS'] = GetStr.GetStrValue(FreqWordsLib['NNS'])
+FreqWords['US'] = GetStr.Value(FreqWordsLib['US'])
+print len(FreqWords['US'])
+FreqWords['AUS'] = GetStr.Value(FreqWordsLib['AUS'])
+FreqWords['CAN'] = GetStr.Value(FreqWordsLib['CAN'])
+FreqWords['UK'] = GetStr.Value(FreqWordsLib['UK'])
+FreqWords['NNS'] = GetStr.Value(FreqWordsLib['NNS'])
 
-MostUsedWords = { 'US':[], 'AUS':[], 'CAN':[], 'UK':[], 'NNS':[] }
+MostUsedWords = { 'US':[0.0]*len(text), 'AUS':[0.0]*len(text), 'CAN':[0.0]*len(text), 'UK':[0.0]*len(text), 'NNS':[0.0]*len(text) }
 
-SlanFreq = {'US':[], 'AUS':[], 'CAN':[], 'UK':[], 'NNS':[]}
+SlanFreq = {'US':[0.0]*len(text), 'AUS':[0.0]*len(text), 'CAN':[0.0]*len(text), 'UK':[0.0]*len(text), 'NNS':[0.0]*len(text)}
 
-BasicFeatures = Features.Basic()
+BasicFeatures = Features.Basic(len(text))
 
-BasicCounters = Features.Counters()
+BasicCounters = Features.Counters(len(text))
 
 sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 i=[]
+word = [0.0]*len(text)
 print('Basic feature processing...')
 for i in range(len(text)):
+    print i
     # ypologismos arithmou xarakthrwn ana keimeno
-    BasicFeatures['TextLen'].append(len(text[i]))   # lista me ton arithmo xaraktirwn
+    BasicFeatures['TextLen'][i]=(len(text[i]))   # lista me ton arithmo xaraktirwn
     # ypologismos toy arithmou twn symvolwn ana keimeno
-    BasicCounters['Symbols'].append(len(RegexpTokenizer(r'[+/\-@&*{}\[\[|]').tokenize(text[i])))
-    BasicFeatures['TextLen'].append(PercentCalc.PercentCalc(BasicCounters['Symbols'][i], BasicFeatures['TextLen'][i]))
+    BasicCounters['Symbols'][i]=(len(RegexpTokenizer(r'[+/\-@&*{}\[\[|]').tokenize(text[i])))
+    BasicFeatures['SymbolsPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Symbols'][i], BasicFeatures['TextLen'][i]))
     # ypologismos toy arithmou shmeiwn stikshs ana keimeno
-    BasicCounters['Puncuations'].append(len(RegexpTokenizer(r'[,.?!;\'\":]').tokenize(text[i])))
-    BasicFeatures['PuncuationsPerChar'].append(PercentCalc.PercentCalc(BasicCounters['Puncuations'][i], BasicFeatures['TextLen'][i]))
+    BasicCounters['Puncuations'][i]=(len(RegexpTokenizer(r'[,.?!;\'\":]').tokenize(text[i])))
+    BasicFeatures['PuncuationsPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Puncuations'][i], BasicFeatures['TextLen'][i]))
     # ypologismos toy arithmou twn kenwn xarakthrwn ana keimeno
-    BasicCounters['Spaces'].append(len(RegexpTokenizer(r' ').tokenize(text[i])))
-    BasicFeatures['SpacesPerChar'].append(PercentCalc.PercentCalc(BasicCounters['Spaces'][i], BasicFeatures['TextLen'][i]))
+    BasicCounters['Spaces'][i]=(len(RegexpTokenizer(r' ').tokenize(text[i])))
+    BasicFeatures['SpacesPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Spaces'][i], BasicFeatures['TextLen'][i]))
     # ypologismos toy arithmou twn kefalaiwn grammatwn ana keimeno
-    BasicCounters['Upper'].append(len(RegexpTokenizer(r'[A-Z]').tokenize(text[i])))
-    BasicFeatures['UpperPerChar'].append(PercentCalc.PercentCalc(BasicCounters['Upper'][i],BasicFeatures['TextLen'][i]))
+    BasicCounters['Upper'][i]=(len(RegexpTokenizer(r'[A-Z]').tokenize(text[i])))
+    BasicFeatures['UpperPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Upper'][i],BasicFeatures['TextLen'][i]))
     # ypologismos toy arithmou twn grammatwn ana keimeno
-    BasicCounters['Letters'].append(len(RegexpTokenizer(r'[A-Z,a-z]').tokenize(text[i])))
-    BasicFeatures['LettersPerChar'].append(PercentCalc.PercentCalc(BasicCounters['Letters'][i],BasicFeatures['TextLen'][i]))
+    BasicCounters['Letters'][i]=(len(RegexpTokenizer(r'[A-Z,a-z]').tokenize(text[i])))
+    BasicFeatures['LettersPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Letters'][i],BasicFeatures['TextLen'][i]))
     # ypologismos toy arithmou twn pshfiwn ana keimeno
-    BasicCounters['Digits'].append(len(RegexpTokenizer(r'[0-9]').tokenize(text[i])))
-    BasicFeatures['DigitsPerChar'].append(PercentCalc.PercentCalc(BasicCounters['Digits'][i], BasicFeatures['TextLen'][i]))
+    BasicCounters['Digits'][i]=(len(RegexpTokenizer(r'[0-9]').tokenize(text[i])))
+    BasicFeatures['DigitsPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Digits'][i], BasicFeatures['TextLen'][i]))
     # eisagwgh sth word twn leksewn ana keimeno
-    word.append(RegexpTokenizer(r'\w+').tokenize(text[i]))
+    word[i]=(RegexpTokenizer(r'\w+').tokenize(text[i]))
     # ypologismos toy arithmou twn leksewn ana keimeno
-    BasicCounters['Words'].append(len(word[i]))
+    BasicCounters['Words'][i]=(len(word[i]))
     count = 0   # metritis gia tis mikres lekseis
     StrLenCounter = 0  # metritis gia to mhkos ths kathe leksis
 
     # ypologizw ta most used words gia kathe ethnikothta
-    MostUsedWords['US'].append(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['US']))
-    MostUsedWords['CAN'].append(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['CAN']))
-    MostUsedWords['UK'].append(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['UK']))
-    MostUsedWords['AUS'].append(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['AUS']))
-    MostUsedWords['NNS'].append(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['NNS']))
-    SlanFreq['US'].append(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['US']))
-    SlanFreq['CAN'].append(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['CAN']))
-    SlanFreq['AUS'].append(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['AUS']))
-    SlanFreq['UK'].append(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['NNS']))
+    MostUsedWords['US'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['US']))
+    MostUsedWords['CAN'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['CAN']))
+    MostUsedWords['UK'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['UK']))
+    MostUsedWords['AUS'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['AUS']))
+    MostUsedWords['NNS'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['NNS']))
+    SlanFreq['US'][i]=(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['US']))
+    SlanFreq['CAN'][i]=(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['CAN']))
+    SlanFreq['AUS'][i]=(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['AUS']))
+    SlanFreq['UK'][i]=(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['NNS']))
     for j in word[i]:
 
         # j = j.decode('utf8', 'replace')
@@ -194,7 +192,7 @@ for i in range(len(text)):
         if len(j)<4:    # elegxos an h trexousa leksi einai short
             count +=1   # an nai afkshsh toy metrith kata 1
 
-    freq_word.append(nltk.FreqDist(word[i]))
+    freq_word[i]=(nltk.FreqDist(word[i]))
     count_legomena = 0
     count_dislegomena = 0
     for j in freq_word[i]:
@@ -205,33 +203,25 @@ for i in range(len(text)):
 
 
     # sth lista pernaw to arithmo twn xarakthrwn pou exoun oles oi lekseis ana keimeno
-    BasicFeatures['CharsINWords'].append(PercentCalc.PercentCalc(StrLenCounter, BasicFeatures['TextLen'][i]))
+    BasicFeatures['CharsINWords'][i]=(PercentCalc.PercentCalc(StrLenCounter, BasicFeatures['TextLen'][i]))
     if BasicCounters['Words'][i]!=0:
 
         # ypologismos toy mesou orou toy mhkous ths kathe lekshs
-        BasicFeatures['AvgWordLen'].append(PercentCalc.PercentCalc(BasicFeatures['CharsINWords'][i],BasicCounters['Words'][i]))
+        BasicFeatures['AvgWordLen'][i]=(PercentCalc.PercentCalc(BasicFeatures['CharsINWords'][i],BasicCounters['Words'][i]))
         # ypologismos mesou orou protasewn ana lekseis ana keimeno
-        BasicFeatures['AvgSentencesWords'].append(PercentCalc.PercentCalc(len(sent_detector.tokenize(text[i])),BasicFeatures['TextLen'][i]))
+        BasicFeatures['AvgSentencesWords'][i]=(PercentCalc.PercentCalc(len(sent_detector.tokenize(text[i])),BasicFeatures['TextLen'][i]))
         # sth lista pernaw ton arithmo mikrwn leksewn kathe keimenou
-        BasicFeatures['ShortWords'].append( PercentCalc.PercentCalc( count, BasicCounters['Words'][i] ) )
-        BasicFeatures['HapaxLegomena'].append( PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] ) )
-        BasicFeatures['HapaxLegomena'].append( PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] ) )
-        BasicFeatures['TotalDiffWords'].append( PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] ) )
-    else:
-        #print i
-        BasicFeatures['AvgWordLen'].append(0.0)
-        BasicFeatures['AvgSentencesWords'].append(0.0)
-        BasicFeatures['ShortWords'].append(0.0)
-        BasicFeatures['HapaxLegomena'].append(0.0)
-        BasicFeatures['HapaxDislegomena'].append(0.0)
-        BasicFeatures['TotalDiffWords'].append(0.0)
+        BasicFeatures['ShortWords'][i]=( PercentCalc.PercentCalc( count, BasicCounters['Words'][i] ) )
+        BasicFeatures['HapaxLegomena'][i]=( PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] ) )
+        BasicFeatures['HapaxLegomena'][i]=( PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] ) )
+        BasicFeatures['TotalDiffWords'][i]=( PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] ) )
+
     if BasicFeatures['TextLen'][i]!=0:
         # ypologismos mesou orou protasewn ana xarakthres ana keimeno
-        BasicFeatures['AvgSentencesChars'].append(float(format(len(sent_detector.tokenize(text[i]))/float(BasicFeatures['TextLen'][i]), '.3f')))
+        BasicFeatures['AvgSentencesChars'][i]=(float(format(len(sent_detector.tokenize(text[i]))/float(BasicFeatures['TextLen'][i]), '.3f')))
     elif BasicFeatures['TextLen'][i]==0:
         #print i
-        BasicFeatures['AvgSentencesChars'].append(0.0)
-        avg_sentences_chars.append(0.0)
+        BasicFeatures['AvgSentencesChars'][i]=(0.0)
     print i,
     sys.stdout.flush()
     print "\r",
@@ -261,14 +251,20 @@ PunctuationsFreq = SingleCharFreq.PunctuationChars(text, BasicCounters['Puncuati
 # leksiko sto opoio pernaw sth syxnothta emfanishs twn shmeiwn stiksews ana keimeno
 
 # ftiaxnw to header gia to csv pou tha eksagw
-header = Arff.header();
+header = OutPutArff.Header();
+print {key: len(value) for key, value in BasicFeatures.items()}
+print {key: len(value) for key, value in LetterFreq.items()}
+print {key: len(value) for key, value in SymbolsFreq.items()}
+print {key: len(value) for key, value in MostUsedWords.items()}
+print {key: len(value) for key, value in SlanFreq.items()}
+print {key: len(value) for key, value in PunctuationsFreq.items()}
 
 print('izip object processing...')
 # me izip pernaw sto output ola ta features pou einai pros eggrafh sto csv
 data = Izip.CreateObj(BasicFeatures, LetterFreq, SymbolsFreq, MostUsedWords, SlanFreq, textClass, PunctuationsFreq)
 print('DONE!')
 
-Arff.Write(header,data)
+OutPutArff.Write(header,data)
 
 print('DONE!')
 print('TELOS - BE HAPPY :)')

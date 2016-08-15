@@ -12,7 +12,7 @@ __email__ = "sp1thas@autistici.org"
 from itertools import izip
 
 def CreateObj(BasicFeatures, LetterFreq, SymbolFreq, MostUsedWords, SlanFreq, textClass, PunctuationsFreq):
-    return izip(
+    return zip(
                     BasicFeatures['SymbolsPerChar'],
                     BasicFeatures['PuncuationsPerChar'],
                     BasicFeatures['SpacesPerChar'],
