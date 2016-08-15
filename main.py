@@ -6,17 +6,13 @@ __license__ = "GPL"
 __email__ = "sp1thas@autistici.org"
 #   ===================================
 
-import codecs, arff, sys
-import unicodecsv as csv
-from itertools import izip
+import codecs, sys
 from nltk.tokenize import RegexpTokenizer
 import nltk.data
 from encodings.utf_8 import decode
 
 '''kanw import ths synarthseis pou exw ylopoihsei ston ypofakelo lib'''
-
-from lib import frequencies, WordsCount, PercentCalc, GetStr, SingleCharFreq, SlangDictionaries, arff
-
+from lib import Arff, frequencies, GetStr, InputFile, Izip, PercentCalc, PunctFreq, SingleCharFreq, SlangDictionaries, str2flt, WordsCount, Features
 words_count = []    # lista me ton arithmo twn leksewn ana keimeno
 word = []   # lista me tis lekseis ana keimeno
 spaces_count = []   # lista gia metrima twn kenwn
@@ -32,11 +28,10 @@ digits_count = []   # lista gia to metrima twn psifion
 digits_count_per_char = []
 total_chars_in_words = []   # total number of chars in word
 
-global text
 text = []   # lista gia to katharo keimeno
 ids = []    # lista gia ta ids
 temp = []
-sample_read = csv.reader(open("sample11-2K.csv","rb")) # anoigma to dataset csv
+csvFile = InputFile.CSV() # anoigma to dataset csv
 # to dataset me to opoio doulevw einai to sample11-extra.csv
 
 '''orisw san list ta slang gia kathe ethnikothta'''
@@ -68,7 +63,7 @@ text_NNS  =[]
 co = 0
 # diavazw to object me to katharo keimeno
 print('Dialogi ethnikotitas...')
-for row in sample_read:
+for row in csvFile:
     # lista me to katharo keimeno
     text.append(row[1])  # pernaw sti lista text to katharo keimeno
     # lista me ta ids twn keimenwn
@@ -97,7 +92,7 @@ for row in sample_read:
     co = co+1
 
 FreqWordsLib = {'US':[], 'AUS': [], 'CAN': [], 'UK': [], 'NNS': []}
-del sample_read, co
+del csvFile, co
 print('DONE!')
 print 'megethos dataset: ', len(text)
 print('Most used words processing...')
@@ -147,12 +142,9 @@ MostUsedWords = { 'US':[], 'AUS':[], 'CAN':[], 'UK':[], 'NNS':[] }
 
 SlanFreq = {'US':[], 'AUS':[], 'CAN':[], 'UK':[], 'NNS':[]}
 
-BasicFeatures = { 'TextLen':[], 'SymbolsPerChar':[], 'PuncuationsPerChar':[], 'SpacesPerChar':[],
-                  'UpperPerChar':[], 'LettersPerChar':[], 'DigitsPerChar':[], 'AvgWordLen':[],
-                  'AvgSentencesWords':[], 'CharsINWords':[] }
+BasicFeatures = Features.Basic()
 
-BasicCounters = { 'Symbols':[], 'Puncuations':[], 'Spaces':[], 'Upper':[], 'Letters':[],
-                  'Digits':[], 'Words':[], 'ShortWords': [] }
+BasicCounters = Features.Counters()
 
 sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 i=[]
@@ -221,25 +213,25 @@ for i in range(len(text)):
         # ypologismos mesou orou protasewn ana lekseis ana keimeno
         BasicFeatures['AvgSentencesWords'].append(PercentCalc.PercentCalc(len(sent_detector.tokenize(text[i])),BasicFeatures['TextLen'][i]))
         # sth lista pernaw ton arithmo mikrwn leksewn kathe keimenou
-        BasicCounters['ShortWords'].append( PercentCalc.PercentCalc( count, BasicCounters['Words'][i] ) )
-        hapax_legomena.append( PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] ) )
-        hapax_dislegomena.append( PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] ) )
-        total_diff_words.append( PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] ) )
+        BasicFeatures['ShortWords'].append( PercentCalc.PercentCalc( count, BasicCounters['Words'][i] ) )
+        BasicFeatures['HapaxLegomena'].append( PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] ) )
+        BasicFeatures['HapaxLegomena'].append( PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] ) )
+        BasicFeatures['TotalDiffWords'].append( PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] ) )
     else:
         #print i
         BasicFeatures['AvgWordLen'].append(0.0)
         BasicFeatures['AvgSentencesWords'].append(0.0)
-        avg_sentences_words.append(0.0)
-        short_words_counter.append(0.0)
-        hapax_legomena.append(0.0)
-        hapax_dislegomena.append(0.0)
-        total_diff_words.append(0.0)
+        BasicFeatures['ShortWords'].append(0.0)
+        BasicFeatures['HapaxLegomena'].append(0.0)
+        BasicFeatures['HapaxDislegomena'].append(0.0)
+        BasicFeatures['TotalDiffWords'].append(0.0)
     if BasicFeatures['TextLen'][i]!=0:
         # ypologismos mesou orou protasewn ana xarakthres ana keimeno
-        avg_sentences_chars.append(float(format(len(sent_detector.tokenize(text[i]))/float(BasicFeatures['TextLen'][i]), '.3f')))
+        BasicFeatures['AvgSentencesChars'].append(float(format(len(sent_detector.tokenize(text[i]))/float(BasicFeatures['TextLen'][i]), '.3f')))
     elif BasicFeatures['TextLen'][i]==0:
-        print i
-        avg_sentences_chars.append(0)
+        #print i
+        BasicFeatures['AvgSentencesChars'].append(0.0)
+        avg_sentences_chars.append(0.0)
     print i,
     sys.stdout.flush()
     print "\r",
@@ -253,15 +245,12 @@ print('DONE!')
 LetterFreq = {}
 LetterFreq = SingleCharFreq.LetterChars(text, BasicCounters['Letters'])
 
-
 '''
     Ypologismos features gia symvola
     me xrhsh tis synarthshs SymbolChars()
 '''
 SymbolsFreq = {}
 SymbolsFreq = SingleCharFreq.SymbolChars(text, BasicFeatures['TextLen'], BasicCounters['Symbols'])
-
-
 
 '''
     Ypologismos features gia shmeia stiksis
@@ -272,33 +261,14 @@ PunctuationsFreq = SingleCharFreq.PunctuationChars(text, BasicCounters['Puncuati
 # leksiko sto opoio pernaw sth syxnothta emfanishs twn shmeiwn stiksews ana keimeno
 
 # ftiaxnw to header gia to csv pou tha eksagw
-header = arff.header();
+header = Arff.header();
 
 print('izip object processing...')
 # me izip pernaw sto output ola ta features pou einai pros eggrafh sto csv
-'''output = izip(BasicFeatures['TextLen'], BasicFeatures['SymbolsPerChar'], Puncuations_count_per_char, spaces_count_per_char,
- upper_count_per_char, letters_count_per_char, digits_count_per_char, short_words_counter, total_chars_in_words,
- avg_word_len, avg_sentences_words, avg_sentences_chars, total_diff_words, hapax_legomena, hapax_dislegomena,
-LetterFreq['a'], LetterFreq['b'], LetterFreq['c'], LetterFreq['d'], LetterFreq['e'], LetterFreq['f'], LetterFreq['g'], LetterFreq['h'],
-['i'], LetterFreq['j'], LetterFreq['k'], LetterFreq['l'], LetterFreq['m'], LetterFreq['n'], LetterFreq['o'], LetterFreq['p'],
-['q'], LetterFreq['r'], LetterFreq['s'], LetterFreq['t'], LetterFreq['u'], LetterFreq['v'], LetterFreq['w'], LetterFreq['x'],
-['y'], LetterFreq['z'], freq_symbols['@'], freq_symbols['#'], freq_symbols['$'], freq_symbols['%'],
- freq_symbols['^'], freq_symbols['&'], freq_symbols['*'], freq_symbols['-'], freq_symbols['_'], freq_symbols['='], freq_symbols['+'], freq_symbols['>'], freq_symbols['<'], freq_symbols['['], freq_symbols[']'], freq_symbols['{'], freq_symbols['}'], freq_symbols['|'], LetterFreq['p'], Puncuations[","], LetterFreq['p'],Puncuations["."], LetterFreq['p'],Puncuations["?"],
- LetterFreq['p'],Puncuations["!"], LetterFreq['p'],Puncuations[":"], LetterFreq['p'],Puncuations[";"],
- LetterFreq['p'],Puncuations["\'"], LetterFreq['p'],Puncuations["\""], MostUsedWords['US'],
- MostUsedWords['UK'], MostUsedWords['AUS'], MostUsedWords['CAN'], MostUsedWords['NNS'],
- SlanFreq['US'], SlanFreq['UK'], SlanFreq['AUS'],SlanFreq['AUS'] , stextClass)
+data = Izip.CreateObj(BasicFeatures, LetterFreq, SymbolsFreq, MostUsedWords, SlanFreq, textClass, PunctuationsFreq)
 print('DONE!')
 
-'''
-del BasicFeatures['TextLen'], textClass, BasicCounters, BasicFeatures, FreqWords, FreqWordsLib, PunctuationsFreq, StrLenCounter, SymbolsFreq
-del LetterFreq, MostUsedWords, avg_sentences_chars, avg_sentences_words, freq_word, hapax_legomena, hapax_dislegomena, ids, total_diff_words, word
-del SlanFreq, SlangDict, nation
-'''
+Arff.Write(header,data)
 
-print('Eggrafi arxeiou arff')
-arff.dump("result2.arff", output, relation='results', names=header)
-del output, header
 print('DONE!')
 print('TELOS - BE HAPPY :)')
-'''
