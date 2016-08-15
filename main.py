@@ -242,12 +242,6 @@ PunctuationsFreq = SingleCharFreq.PunctuationChars(text, BasicCounters['Puncuati
 
 # ftiaxnw to header gia to csv pou tha eksagw
 header = OutPutArff.Header();
-print {key: len(value) for key, value in BasicFeatures.items()}
-print {key: len(value) for key, value in LetterFreq.items()}
-print {key: len(value) for key, value in SymbolsFreq.items()}
-print {key: len(value) for key, value in MostUsedWords.items()}
-print {key: len(value) for key, value in SlanFreq.items()}
-print {key: len(value) for key, value in PunctuationsFreq.items()}
 
 print('izip object processing...')
 # me izip pernaw sto output ola ta features pou einai pros eggrafh sto csv
