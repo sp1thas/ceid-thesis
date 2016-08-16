@@ -104,24 +104,18 @@ for i in range(len(text)):
 
     # sth lista pernaw to arithmo twn xarakthrwn pou exoun oles oi lekseis ana keimeno
     BasicFeatures['CharsINWords'][i]=(PercentCalc.PercentCalc(StrLenCounter, BasicFeatures['TextLen'][i]))
-    if BasicCounters['Words'][i]!=0:
 
-        # ypologismos toy mesou orou toy mhkous ths kathe lekshs
-        BasicFeatures['AvgWordLen'][i]=(PercentCalc.PercentCalc(BasicFeatures['CharsINWords'][i],BasicCounters['Words'][i]))
-        # ypologismos mesou orou protasewn ana lekseis ana keimeno
-        BasicFeatures['AvgSentencesWords'][i]=(PercentCalc.PercentCalc(len(sent_detector.tokenize(text[i])),BasicFeatures['TextLen'][i]))
-        # sth lista pernaw ton arithmo mikrwn leksewn kathe keimenou
-        BasicFeatures['ShortWords'][i]=( PercentCalc.PercentCalc( count, BasicCounters['Words'][i] ) )
-        BasicFeatures['HapaxLegomena'][i]=( PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] ) )
-        BasicFeatures['HapaxLegomena'][i]=( PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] ) )
-        BasicFeatures['TotalDiffWords'][i]=( PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] ) )
+    # ypologismos toy mesou orou toy mhkous ths kathe lekshs
+    BasicFeatures['AvgWordLen'][i]=(PercentCalc.PercentCalc(BasicFeatures['CharsINWords'][i],BasicCounters['Words'][i]))
+    # ypologismos mesou orou protasewn ana lekseis ana keimeno
+    BasicFeatures['AvgSentencesWords'][i]=(PercentCalc.PercentCalc(len(sent_detector.tokenize(text[i])),BasicFeatures['TextLen'][i]))
+    # sth lista pernaw ton arithmo mikrwn leksewn kathe keimenou
+    BasicFeatures['ShortWords'][i]=( PercentCalc.PercentCalc( count, BasicCounters['Words'][i] ) )
+    BasicFeatures['HapaxLegomena'][i]=( PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] ) )
+    BasicFeatures['HapaxDislegomena'][i]=( PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] ) )
+    BasicFeatures['TotalDiffWords'][i]=( PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] ) )
+    BasicFeatures['AvgSentencesChars'][i]=(float(format(len(sent_detector.tokenize(text[i]))/float(BasicFeatures['TextLen'][i]), '.3f')))
 
-    if BasicFeatures['TextLen'][i]!=0:
-        # ypologismos mesou orou protasewn ana xarakthres ana keimeno
-        BasicFeatures['AvgSentencesChars'][i]=(float(format(len(sent_detector.tokenize(text[i]))/float(BasicFeatures['TextLen'][i]), '.3f')))
-    elif BasicFeatures['TextLen'][i]==0:
-        #print i
-        BasicFeatures['AvgSentencesChars'][i]=(0.0)
     print i,
     sys.stdout.flush()
     print "\r",
