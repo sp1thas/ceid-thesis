@@ -8,9 +8,9 @@
 
 ### Prerequirements:
 
-* [**Python 2.7**](https://www.python.org/)
+* **[Python 2.7](https://www.python.org/)**
 
-* [**NLTK**](http://www.nltk.org/install.html)
+* **[NLTK](http://www.nltk.org/install.html)**
 
   * RegexpTokenizer
 
@@ -18,8 +18,7 @@
 
     Installation
 
-    * `[sudo] pip install -U nltk`
-
+    `[sudo] pip install -U nltk`
 
 
 * Python Modules
@@ -33,6 +32,7 @@
   * Installation:
 
     `[sudo] pip install arff decodes unicodecsv`
+
 
 
 ---
