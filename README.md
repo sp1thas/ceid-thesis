@@ -1,77 +1,94 @@
-#Feature extraction for text categorization
-##Geolocation authorship attribution
+# Feature extraction for text categorization
+
+## Geolocation authorship attribution
 
 **more infos at main.py**
 
-
 ---
-###Prerequirements:
 
-* **[Python 2.7](https://www.python.org/)**
+### Prerequirements:
 
-* **[NLTK](http://www.nltk.org/install.html)**
+* [**Python 2.7**](https://www.python.org/)
 
-    - RegexpTokenizer
+* [**NLTK**](http://www.nltk.org/install.html)
 
-    - nltk.data
+  * RegexpTokenizer
 
-  
+  * nltk.data
+
+    Installation
+
+    * `[sudo] pip install -U nltk`
+
+
 
 * Python Modules
 
-    - [arff](https://pypi.python.org/pypi/arff)
+  * [arff](https://pypi.python.org/pypi/arff)
 
-    - [decodes](https://pypi.python.org/pypi/decodes)
+  * [decodes](https://pypi.python.org/pypi/decodes)
 
-    - [unicodecsv](https://pypi.python.org/pypi/unicodecsv)
+  * [unicodecsv](https://pypi.python.org/pypi/unicodecsv)
 
-    - Installation:
+  * Installation:
 
-          `[sudo] pip install arff decodes unicodecsv`
+    `[sudo] pip install arff decodes unicodecsv`
+
+
 ---
 
 ### Input .csv file template:
+
 ![](https://raw.githubusercontent.com/sp1thas/geo-nltk-feature/master/csv-template.png)
 
+#### Text ID:
 
-####Text ID:
-- unique id for each text
+* unique id for each text
 
-####Author's gender:
-- "M" for Male
-- "F" for Female
+#### Author's gender:
 
-####Author's age category:
-- A: 14-19
-- B: 20-24
-- C: 25-34
-- D: 35-44
-- E: 45-59
-- F: >60
+* "M" for Male
+* "F" for Female
 
-####Author's exact age:
-- >14
+#### Author's age category:
 
-####Social Media:
-- Facebook/Twitter
+* A: 14-19
+* B: 20-24
+* C: 25-34
+* D: 35-44
+* E: 45-59
+* F: &gt;60
 
-####Author's thematic area:
+#### Author's exact age:
+
+* > 14
+
+
+#### Social Media:
+
+* Facebook\/Twitter
+
+#### Author's thematic area:
+
 Based on facebook page categories etc
-- Actor/Director
-- Artist
-- Athlete
-- Author
-- Business Person
-- Chef
-- Coach
-- Doctor
-- Entertainer
-- Journalist
-- Lawyer
-- Musician/Band
-- Politician
-- Teacher
-- Writer
 
-####Other infos
-- anything else about the author
+* Actor\/Director
+* Artist
+* Athlete
+* Author
+* Business Person
+* Chef
+* Coach
+* Doctor
+* Entertainer
+* Journalist
+* Lawyer
+* Musician\/Band
+* Politician
+* Teacher
+* Writer
+
+#### Other infos
+
+* anything else about the author
+
