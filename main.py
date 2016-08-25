@@ -12,7 +12,7 @@ import nltk.data
 from encodings.utf_8 import decode
 
 '''kanw import ths synarthseis pou exw ylopoihsei ston ypofakelo lib'''
-from lib import OutPutArff, GetStr, InputFile, Izip, PercentCalc, Freq, SingleCharFreq, SlangDictionaries, WordsCount, Features
+from lib import OutPutArff, GetStr, InputFile, Izip, PercentCalc, SingleCharFreq, SlangDictionaries, WordsCount, Features
 
 
 textClass = []
@@ -59,27 +59,27 @@ print('Basic feature processing...')
 for i in range(len(text)):
     print i
     # ypologismos arithmou xarakthrwn ana keimeno
-    BasicFeatures['TextLen'][i]=(len(text[i]))   # lista me ton arithmo xaraktirwn
+    BasicFeatures['TextLen'][i]=len(text[i])   # lista me ton arithmo xaraktirwn
     # ypologismos toy arithmou twn symvolwn ana keimeno
-    BasicCounters['Symbols'][i]=(len(RegexpTokenizer(r'[+/\-@&*{}\[\[|]').tokenize(text[i])))
-    BasicFeatures['SymbolsPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Symbols'][i], BasicFeatures['TextLen'][i]))
+    BasicCounters['Symbols'][i]=len(RegexpTokenizer(r'[+/\-@&*{}\[\[|]').tokenize(text[i]))
+    BasicFeatures['SymbolsPerChar'][i]=PercentCalc.PercentCalc(BasicCounters['Symbols'][i], BasicFeatures['TextLen'][i])
     # ypologismos toy arithmou shmeiwn stikshs ana keimeno
-    BasicCounters['Puncuations'][i]=(len(RegexpTokenizer(r'[,.?!;\'\":]').tokenize(text[i])))
-    BasicFeatures['PuncuationsPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Puncuations'][i], BasicFeatures['TextLen'][i]))
+    BasicCounters['Puncuations'][i]=len(RegexpTokenizer(r'[,.?!;\'\":]').tokenize(text[i]))
+    BasicFeatures['PuncuationsPerChar'][i]=PercentCalc.PercentCalc(BasicCounters['Puncuations'][i], BasicFeatures['TextLen'][i])
     # ypologismos toy arithmou twn kenwn xarakthrwn ana keimeno
-    BasicCounters['Spaces'][i]=(len(RegexpTokenizer(r' ').tokenize(text[i])))
-    BasicFeatures['SpacesPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Spaces'][i], BasicFeatures['TextLen'][i]))
+    BasicCounters['Spaces'][i]=len(RegexpTokenizer(r' ').tokenize(text[i]))
+    BasicFeatures['SpacesPerChar'][i]=PercentCalc.PercentCalc(BasicCounters['Spaces'][i], BasicFeatures['TextLen'][i])
     # ypologismos toy arithmou twn kefalaiwn grammatwn ana keimeno
-    BasicCounters['Upper'][i]=(len(RegexpTokenizer(r'[A-Z]').tokenize(text[i])))
-    BasicFeatures['UpperPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Upper'][i],BasicFeatures['TextLen'][i]))
+    BasicCounters['Upper'][i]=len(RegexpTokenizer(r'[A-Z]').tokenize(text[i]))
+    BasicFeatures['UpperPerChar'][i]=PercentCalc.PercentCalc(BasicCounters['Upper'][i],BasicFeatures['TextLen'][i])
     # ypologismos toy arithmou twn grammatwn ana keimeno
-    BasicCounters['Letters'][i]=(len(RegexpTokenizer(r'[A-Z,a-z]').tokenize(text[i])))
-    BasicFeatures['LettersPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Letters'][i],BasicFeatures['TextLen'][i]))
+    BasicCounters['Letters'][i]=len(RegexpTokenizer(r'[A-Z,a-z]').tokenize(text[i]))
+    BasicFeatures['LettersPerChar'][i]=PercentCalc.PercentCalc(BasicCounters['Letters'][i],BasicFeatures['TextLen'][i])
     # ypologismos toy arithmou twn pshfiwn ana keimeno
-    BasicCounters['Digits'][i]=(len(RegexpTokenizer(r'[0-9]').tokenize(text[i])))
-    BasicFeatures['DigitsPerChar'][i]=(PercentCalc.PercentCalc(BasicCounters['Digits'][i], BasicFeatures['TextLen'][i]))
+    BasicCounters['Digits'][i]=len(RegexpTokenizer(r'[0-9]').tokenize(text[i]))
+    BasicFeatures['DigitsPerChar'][i]=PercentCalc.PercentCalc(BasicCounters['Digits'][i], BasicFeatures['TextLen'][i])
     # eisagwgh sth word twn leksewn ana keimeno
-    word[i]=(RegexpTokenizer(r'\w+').tokenize(text[i]))
+    word[i]=RegexpTokenizer(r'\w+').tokenize(text[i])
     # ypologismos toy arithmou twn leksewn ana keimeno
     BasicCounters['Words'][i]=(len(word[i]))
     count = 0   # metritis gia tis mikres lekseis
@@ -103,18 +103,18 @@ for i in range(len(text)):
 
 
     # sth lista pernaw to arithmo twn xarakthrwn pou exoun oles oi lekseis ana keimeno
-    BasicFeatures['CharsINWords'][i]=(PercentCalc.PercentCalc(StrLenCounter, BasicFeatures['TextLen'][i]))
+    BasicFeatures['CharsINWords'][i]=PercentCalc.PercentCalc(StrLenCounter, BasicFeatures['TextLen'][i])
 
     # ypologismos toy mesou orou toy mhkous ths kathe lekshs
-    BasicFeatures['AvgWordLen'][i]=(PercentCalc.PercentCalc(BasicFeatures['CharsINWords'][i],BasicCounters['Words'][i]))
+    BasicFeatures['AvgWordLen'][i]=PercentCalc.PercentCalc(BasicFeatures['CharsINWords'][i],BasicCounters['Words'][i])
     # ypologismos mesou orou protasewn ana lekseis ana keimeno
-    BasicFeatures['AvgSentencesWords'][i]=(PercentCalc.PercentCalc(len(sent_detector.tokenize(text[i])),BasicFeatures['TextLen'][i]))
+    BasicFeatures['AvgSentencesWords'][i]=PercentCalc.PercentCalc(len(sent_detector.tokenize(text[i])),BasicCounters['Words'][i])
     # sth lista pernaw ton arithmo mikrwn leksewn kathe keimenou
-    BasicFeatures['ShortWords'][i]=( PercentCalc.PercentCalc( count, BasicCounters['Words'][i] ) )
-    BasicFeatures['HapaxLegomena'][i]=( PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] ) )
-    BasicFeatures['HapaxDislegomena'][i]=( PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] ) )
-    BasicFeatures['TotalDiffWords'][i]=( PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] ) )
-    BasicFeatures['AvgSentencesChars'][i]=(float(format(len(sent_detector.tokenize(text[i]))/float(BasicFeatures['TextLen'][i]), '.3f')))
+    BasicFeatures['ShortWords'][i]= PercentCalc.PercentCalc( count, BasicCounters['Words'][i] )
+    BasicFeatures['HapaxLegomena'][i]= PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] )
+    BasicFeatures['HapaxDislegomena'][i]= PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] )
+    BasicFeatures['TotalDiffWords'][i]= PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] )
+    BasicFeatures['AvgSentencesChars'][i]= PercentCalc.PercentCalc( len(sent_detector.tokenize(text[i])), BasicFeatures['TextLen'][i] )
 
     print i,
     sys.stdout.flush()
