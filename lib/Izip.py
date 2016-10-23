@@ -11,7 +11,7 @@ __email__ = "sp1thas@autistici.org"
 '''
 from itertools import izip
 
-def CreateObj(BasicFeatures, LetterFreq, SymbolFreq, MostUsedWords, SlanFreq, textClass, PunctuationsFreq):
+def CreateObj(BasicFeatures, LetterFreq, SymbolFreq, MostUsedWords, SlanFreq, textClass, PunctuationsFreq, PosTagFeatures):
     return izip(
                     BasicFeatures['SymbolsPerChar'],
                     BasicFeatures['PuncuationsPerChar'],
@@ -82,18 +82,19 @@ def CreateObj(BasicFeatures, LetterFreq, SymbolFreq, MostUsedWords, SlanFreq, te
                     PunctuationsFreq['6'],
                     PunctuationsFreq['7'],
                     PunctuationsFreq['8'],
-                    MostUsedWords['US'],
-                    MostUsedWords['UK'],
-                    MostUsedWords['AUS'],
-                    MostUsedWords['CAN'],
-                    MostUsedWords['NNS'],
-                    SlanFreq['US'],
-                    SlanFreq['UK'],
-                    SlanFreq['AUS'],
-                    SlanFreq['AUS'] ,
-                    textClass
+                    PosTagFeatures['Noun'],
+                    PosTagFeatures['Pronoun'],
+                    PosTagFeatures['Adjective'],
+                    PosTagFeatures['Verb'],
+                    PosTagFeatures['Adverb'],
+                    PosTagFeatures['Preposition'],
+                    PosTagFeatures['Conjunction'],
+                    PosTagFeatures['Interjection'],
+                    PosTagFeatures['Determinant'],
+                    PosTagFeatures['Particle']
                 )
-def NoZipFormat(BasicFeatures, LetterFreq, SymbolFreq, MostUsedWords, SlanFreq, textClass, PunctuationsFreq):
+
+def NoZipFormat(BasicFeatures, LetterFreq, SymbolFreq, textClass, PunctuationsFreq, PosTagFeatures):
     temp = [    BasicFeatures['SymbolsPerChar'],
                 BasicFeatures['PuncuationsPerChar'],
                 BasicFeatures['SpacesPerChar'],
@@ -163,15 +164,15 @@ def NoZipFormat(BasicFeatures, LetterFreq, SymbolFreq, MostUsedWords, SlanFreq, 
                 PunctuationsFreq['6'],
                 PunctuationsFreq['7'],
                 PunctuationsFreq['8'],
-                MostUsedWords['US'],
-                MostUsedWords['UK'],
-                MostUsedWords['AUS'],
-                MostUsedWords['CAN'],
-                MostUsedWords['NNS'],
-                SlanFreq['US'],
-                SlanFreq['UK'],
-                SlanFreq['AUS'],
-                SlanFreq['AUS'] ,
-                textClass
+                PosTagFeatures['Noun'],
+                PosTagFeatures['Pronoun'],
+                PosTagFeatures['Adjective'],
+                PosTagFeatures['Verb'],
+                PosTagFeatures['Adverb'],
+                PosTagFeatures['Preposition'],
+                PosTagFeatures['Conjunction'],
+                PosTagFeatures['Interjection'],
+                PosTagFeatures['Determinant'],
+                PosTagFeatures['Particle']
             ]
     return map(list, zip(*temp))

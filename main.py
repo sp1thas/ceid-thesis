@@ -12,9 +12,9 @@ import nltk.data
 from encodings.utf_8 import decode
 
 '''kanw import ths synarthseis pou exw ylopoihsei ston ypofakelo lib'''
-from lib import OutPutArff, frequencies, GetStr, InputFile, Izip, PercentCalc, Freq, SingleCharFreq, SlangDictionaries, WordsCount, Features
+from lib import PosTags ,OutPutArff, GetStr, InputFile, Izip, PercentCalc, Freq, SingleCharFreq, SlangDictionaries, WordsCount, Features
 
-
+calflag = 0
 textClass = []
 text = []   # lista gia to katharo keimeno
 ids = []    # lista gia ta ids
@@ -22,27 +22,10 @@ temp = []
 csvFile = InputFile.CSV() # anoigma to dataset csv
 # to dataset me to opoio doulevw einai to sample11-extra.csv
 
-'''orisw san list ta slang gia kathe ethnikothta'''
-SlangDict = { 'US': [], 'AUS' : [], 'CAN' : [], 'UK' : [], 'NNS':[] }
-
-SlangDict['US'] = SlangDictionaries.US()
-
-SlangDict['AUS'] = SlangDictionaries.AUS()
-
-SlangDict['CAN'] = SlangDictionaries.CAN()
-
-SlangDict['UK'] = SlangDictionaries.UK()
 
 write = codecs.open("text", "wb", "utf-8")
 write_open = codecs.open("text", "rb", "utf-8")
 nation = []
-
-
-text_US=[]
-text_AUS=[]
-text_GBR=[]
-text_CAN = []
-text_NNS  =[]
 
 co = 0
 # diavazw to object me to katharo keimeno
@@ -53,89 +36,29 @@ for row in csvFile:
     # lista me ta ids twn keimenwn
     ids.append(int(row[0]))  # to antistoixo id
     # lista me ta nationalities twn keimenwn
-    nation.append(row[7])
-    # antistoixes listes me ta keimena ana nationalities
-    if row[7]=='US':
-        text_US.append(row[1].encode("ascii", "ignore"))
-        textClass.append(0)
-    elif row[7]=='AUS':
-        text_AUS.append(row[1].encode("ascii", "ignore"))
-        textClass.append(1)
-    elif row[7]=='CAN':
-        text_CAN.append(row[1].encode("ascii", "ignore"))
-        textClass.append(2)
-    elif row[7]=='UK':
-        text_GBR.append(row[1].encode("ascii", "ignore"))
-        textClass.append(3)
-    else:
-        textClass.append(4)
-        text_NNS.append(row[1].encode("ascii", "ignore"))
+
     print co,
     sys.stdout.flush()
     print "\r",
     co = co+1
 
 freq_word = [0.0]*len(text)
-FreqWordsLib = {'US':[], 'AUS': [], 'CAN': [], 'UK': [], 'NNS': []}
 del csvFile, co
 print('DONE!')
 print 'megethos dataset: ', len(text)
-print('Most used words processing...')
-FreqWordsLib['US'] = Freq.NationalityWords(text_US, write, write_open)
-del text_US
-print('US DONE!')
-FreqWordsLib['AUS'] = Freq.NationalityWords(text_AUS, write, write_open)
-del text_AUS
-print('AUS DONE!')
-FreqWordsLib['CAN'] = Freq.NationalityWords(text_CAN, write, write_open)
-del text_CAN
-print('CAN DONE!')
-FreqWordsLib['UK'] = Freq.NationalityWords(text_GBR, write, write_open)
-del text_GBR
-print('UK DONE!')
-FreqWordsLib['NNS'] = Freq.NationalityWords(text_NNS, write, write_open)
-del text_NNS, temp
-print('NNS DONE')
-print('Removing commons words...')
-# vriskw ta keina most commons words
-commons = set(FreqWordsLib['US'])&set(FreqWordsLib['AUS'])&set(FreqWordsLib['UK'])&set(FreqWordsLib['CAN'])&set(FreqWordsLib['NNS'])
-for j in commons:
-    # kai ta svinw apo oles tis listes
-    del FreqWordsLib['US'][j]
-    del FreqWordsLib['AUS'][j]
-    del FreqWordsLib['CAN'][j]
-    del FreqWordsLib['UK'][j]
-    del FreqWordsLib['NNS'][j]
-del commons
-print('DONE!')
-# apo afta krataw ta 20 most commons
-FreqWordsLib['US'] = FreqWordsLib['US'].most_common(50)
-FreqWordsLib['AUS'] = FreqWordsLib['AUS'].most_common(50)
-FreqWordsLib['CAN'] = FreqWordsLib['CAN'].most_common(50)
-FreqWordsLib['UK'] = FreqWordsLib['UK'].most_common(50)
-FreqWordsLib['NNS'] = FreqWordsLib['NNS'].most_common(50)
-
-#kai apo ta antistoixa krataw mono tis lekseis xwris to value
-FreqWords = {'US':[], 'AUS': [], 'CAN': [], 'UK': [], 'NNS': []}
-FreqWords['US'] = GetStr.Value(FreqWordsLib['US'])
-print len(FreqWords['US'])
-FreqWords['AUS'] = GetStr.Value(FreqWordsLib['AUS'])
-FreqWords['CAN'] = GetStr.Value(FreqWordsLib['CAN'])
-FreqWords['UK'] = GetStr.Value(FreqWordsLib['UK'])
-FreqWords['NNS'] = GetStr.Value(FreqWordsLib['NNS'])
-
-MostUsedWords = { 'US':[0.0]*len(text), 'AUS':[0.0]*len(text), 'CAN':[0.0]*len(text), 'UK':[0.0]*len(text), 'NNS':[0.0]*len(text) }
-
-SlanFreq = {'US':[0.0]*len(text), 'AUS':[0.0]*len(text), 'CAN':[0.0]*len(text), 'UK':[0.0]*len(text), 'NNS':[0.0]*len(text)}
 
 BasicFeatures = Features.Basic(len(text))
-
+PosTagFeatures = Features.PosTags(len(text))
 BasicCounters = Features.Counters(len(text))
+PosTagsCounters = Features.PosTagsCounters(len(text))
 
 sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 i=[]
 word = [0.0]*len(text)
 print('Basic feature processing...')
+check1 = raw_input("Do you want to calculate pos tags? [Yes (y), No (n) ]\n>>> ")
+if check1 == 'y':
+    calflag = 1
 for i in range(len(text)):
     print i
     # ypologismos arithmou xarakthrwn ana keimeno
@@ -165,16 +88,6 @@ for i in range(len(text)):
     count = 0   # metritis gia tis mikres lekseis
     StrLenCounter = 0  # metritis gia to mhkos ths kathe leksis
 
-    # ypologizw ta most used words gia kathe ethnikothta
-    MostUsedWords['US'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['US']))
-    MostUsedWords['CAN'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['CAN']))
-    MostUsedWords['UK'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['UK']))
-    MostUsedWords['AUS'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['AUS']))
-    MostUsedWords['NNS'][i]=(WordsCount.NationalCommonsPerDoc(word[i], FreqWords['NNS']))
-    SlanFreq['US'][i]=(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['US']))
-    SlanFreq['CAN'][i]=(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['CAN']))
-    SlanFreq['AUS'][i]=(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['AUS']))
-    SlanFreq['UK'][i]=(WordsCount.NationalCommonsPerDoc(word[i], SlanFreq['NNS']))
     for j in word[i]:
 
         # j = j.decode('utf8', 'replace')
@@ -194,24 +107,42 @@ for i in range(len(text)):
 
     # sth lista pernaw to arithmo twn xarakthrwn pou exoun oles oi lekseis ana keimeno
     BasicFeatures['CharsINWords'][i]=(PercentCalc.PercentCalc(StrLenCounter, BasicFeatures['TextLen'][i]))
-    if BasicCounters['Words'][i]!=0:
 
-        # ypologismos toy mesou orou toy mhkous ths kathe lekshs
-        BasicFeatures['AvgWordLen'][i]=(PercentCalc.PercentCalc(BasicFeatures['CharsINWords'][i],BasicCounters['Words'][i]))
-        # ypologismos mesou orou protasewn ana lekseis ana keimeno
-        BasicFeatures['AvgSentencesWords'][i]=(PercentCalc.PercentCalc(len(sent_detector.tokenize(text[i])),BasicFeatures['TextLen'][i]))
-        # sth lista pernaw ton arithmo mikrwn leksewn kathe keimenou
-        BasicFeatures['ShortWords'][i]=( PercentCalc.PercentCalc( count, BasicCounters['Words'][i] ) )
-        BasicFeatures['HapaxLegomena'][i]=( PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] ) )
-        BasicFeatures['HapaxLegomena'][i]=( PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] ) )
-        BasicFeatures['TotalDiffWords'][i]=( PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] ) )
+    # ypologismos toy mesou orou toy mhkous ths kathe lekshs
+    BasicFeatures['AvgWordLen'][i]=(PercentCalc.PercentCalc(BasicFeatures['CharsINWords'][i],BasicCounters['Words'][i]))
+    # ypologismos mesou orou protasewn ana lekseis ana keimeno
+    BasicFeatures['AvgSentencesWords'][i]=(PercentCalc.PercentCalc(len(sent_detector.tokenize(text[i])),BasicFeatures['TextLen'][i]))
+    # sth lista pernaw ton arithmo mikrwn leksewn kathe keimenou
+    BasicFeatures['ShortWords'][i]=( PercentCalc.PercentCalc( count, BasicCounters['Words'][i] ) )
+    BasicFeatures['HapaxLegomena'][i]=( PercentCalc.PercentCalc( count_legomena, BasicCounters['Words'][i] ) )
+    BasicFeatures['HapaxDislegomena'][i]=( PercentCalc.PercentCalc( count_dislegomena, BasicCounters['Words'][i] ) )
+    BasicFeatures['TotalDiffWords'][i]=( PercentCalc.PercentCalc( len( freq_word[i]), BasicCounters['Words'][i] ) )
+    BasicFeatures['AvgSentencesChars'][i]=(float(format(len(sent_detector.tokenize(text[i]))/float(BasicFeatures['TextLen'][i]), '.3f')))
 
-    if BasicFeatures['TextLen'][i]!=0:
-        # ypologismos mesou orou protasewn ana xarakthres ana keimeno
-        BasicFeatures['AvgSentencesChars'][i]=(float(format(len(sent_detector.tokenize(text[i]))/float(BasicFeatures['TextLen'][i]), '.3f')))
-    elif BasicFeatures['TextLen'][i]==0:
-        #print i
-        BasicFeatures['AvgSentencesChars'][i]=(0.0)
+    if calflag:
+        PosTagsCounters['Noun'][i] = PosTags.Counter(text[i], 'Noun')
+        PosTagsCounters['Pronoun'][i] = PosTags.Counter(text[i], 'Pronoun')
+        PosTagsCounters['Adjective'][i] = PosTags.Counter(text[i], 'Adjective')
+        PosTagsCounters['Verb'][i] = PosTags.Counter(text[i], 'Verb')
+        PosTagsCounters['Adverb'][i] = PosTags.Counter(text[i], 'Adverb')
+        PosTagsCounters['Preposition'][i] = PosTags.Counter(text[i], 'Preposition')
+        PosTagsCounters['Conjunction'][i] = PosTags.Counter(text[i], 'Conjunction')
+        PosTagsCounters['Interjection'][i] = PosTags.Counter(text[i], 'Interjection')
+        PosTagsCounters['Determinant'][i] = PosTags.Counter(text[i], 'Determinant')
+        PosTagsCounters['Particle'][i] = PosTags.Counter(text[i], 'Particle')
+
+        PosTagFeatures['Noun'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Noun'][i], BasicCounters['Words'][i])
+        PosTagFeatures['Pronoun'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Pronoun'][i], BasicCounters['Words'][i])
+        PosTagFeatures['Adjective'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Adjective'][i], BasicCounters['Words'][i])
+        PosTagFeatures['Verb'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Verb'][i], BasicCounters['Words'][i])
+        PosTagFeatures['Adverb'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Adverb'][i], BasicCounters['Words'][i])
+        PosTagFeatures['Preposition'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Preposition'][i], BasicCounters['Words'][i])
+        PosTagFeatures['Conjunction'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Conjunction'][i], BasicCounters['Words'][i])
+        PosTagFeatures['Interjection'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Interjection'][i], BasicCounters['Words'][i])
+        PosTagFeatures['Determinant'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Determinant'][i], BasicCounters['Words'][i])
+        PosTagFeatures['Particle'][i] =  PercentCalc.PercentCalc(PosTagsCounters['Particle'][i], BasicCounters['Words'][i])
+
+
     print i,
     sys.stdout.flush()
     print "\r",
@@ -245,7 +176,7 @@ header = OutPutArff.Header();
 
 print('izip object processing...')
 # me izip pernaw sto output ola ta features pou einai pros eggrafh sto csv
-data = Izip.NoZipFormat(BasicFeatures, LetterFreq, SymbolsFreq, MostUsedWords, SlanFreq, textClass, PunctuationsFreq)
+data = Izip.NoZipFormat(BasicFeatures, LetterFreq, SymbolsFreq, textClass, PunctuationsFreq, PosTagFeatures)
 print('DONE!')
 print('Eggrafi arxeiou arff')
 DefaultFileName = "resaults.arff"

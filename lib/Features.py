@@ -35,3 +35,29 @@ def Counters(length):
                 'Words':[0.0]*length,
                 'ShortWords': [0.0]*length
     }
+def PosTags(length):
+    return {
+                'Noun':[0.0]*length,
+                'Pronoun':[0.0]*length,
+                'Adjective':[0.0]*length,
+                'Verb':[0.0]*length,
+                'Adverb':[0.0]*length,
+                'Preposition':[0.0]*length,
+                'Conjunction':[0.0]*length,
+                'Interjection':[0.0]*length,
+                'Determinant':[0.0]*length,
+                'Particle':[0.0]*length,
+    }
+def PosTagsCounters(length):
+    return {
+                'Noun':[0.0]*length,
+                'Pronoun':[0.0]*length,
+                'Adjective':[0.0]*length,
+                'Verb':[0.0]*length,
+                'Adverb':[0.0]*length,
+                'Preposition':[0.0]*length,
+                'Conjunction':[0.0]*length,
+                'Interjection':[0.0]*length,
+                'Determinant':[0.0]*length,
+                'Particle':[0.0]*length,
+    }
