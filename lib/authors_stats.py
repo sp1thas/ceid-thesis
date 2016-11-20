@@ -14,7 +14,6 @@ Twitter_Authors = 0
 for row in textFile:
     if counter == 0:
         tmp = row
-        print tmp
         counter += 1
         Authors = 1
     elif tmp[2]!=row[2] or tmp[3]!=row[3] or tmp[4]!=row[4] or tmp[5] != row[5] or tmp[6] != row[6] or tmp[7] != row[7]:
