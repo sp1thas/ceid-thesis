@@ -2,7 +2,7 @@
 import unicodecsv as csv
 
 DefaultFile = "out2.csv"
-print "Default csv file: '50docs.csv' (Press Enter for default csv file)"
+print "Default csv file: 'out2.csv' (Press Enter for default csv file)"
 csvFile = raw_input("Insert csv file name: ") or DefaultFile #eisagwgh onomatos arxeiou
 
 textFile = csv.reader(open(csvFile,"rb")) # anoigma to dataset csv
