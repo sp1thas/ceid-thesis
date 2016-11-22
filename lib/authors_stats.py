@@ -30,42 +30,46 @@ for row in textFile:
     elif tmp[2]!=row[2] or tmp[3]!=row[3] or tmp[4]!=row[4] or tmp[5] != row[5] or tmp[6] != row[6] or tmp[7] != row[7]:
         counter += 1
         Authors += 1
-        if tmp[2]=='M':
+        if tmp[2]=='M' or tmp[2]=='M ' or tmp[2]=='m' or tmp[2]==' M':
             Gender_Author['Male'] += 1
-        else:
+        elif tmp[2]=='F':
             Gender_Author['Female'] += 1
-        if tmp[5] == 'Facebook':
+        else:
+            print 'gender else:', tmp[2]
+        if tmp[5] == 'Facebook' or tmp[5]=='facebook':
             Social_Author['Facebook'] += 1
-        if tmp[5] == 'Twitter':
+        elif tmp[5] == 'Twitter':
             Social_Author['Twitter'] += 1
+        else:
+            print 'social else: ',tmp[5]
         ##########################
-        if tmp[6] == 'Actor/Director':
+        if tmp[6] == 'Actor/Director' or tmp[6] == 'actor/director':
             Thematic_Author['Actor/Director'] +=1
-        elif tmp[6] == 'Artist':
+        elif tmp[6] == 'Artist' or tmp[6]=='artist':
             Thematic_Author['Artist']+=1
         elif tmp[6] == 'Athlete':
             Thematic_Author['Athlete']+=1
-        elif tmp[6] == 'Author':
+        elif tmp[6] == 'Author' or tmp[6]=='athlete':
             Thematic_Author['Author']+=1
         elif tmp[6] == 'Chef':
             Thematic_Author['Chef']+=1
-        elif tmp[6] == 'Comedian':
+        elif tmp[6] == 'Comedian' or tmp[6]=='comedian':
             Thematic_Author['Comedian']+=1
         elif tmp[6] == 'Designer':
             Thematic_Author['Designer']+=1
-        elif tmp[6] == 'Entertainer':
+        elif tmp[6] == 'Entertainer' or tmp[6]=='entertainer':
             Thematic_Author['Entertainer']+=1
         elif tmp[6] == 'Fashion':
             Thematic_Author['Fashion']+=1
         elif tmp[6] == 'Music':
             Thematic_Author['Music']+=1
-        elif tmp[6] == 'Musician/Band':
+        elif tmp[6] == 'Musician/Band' or tmp[6]=='musician/band':
             Thematic_Author['Musician/Band']+=1
         elif tmp[6] == 'News Personality':
             Thematic_Author['News Personality']+=1
         elif tmp[6] == 'Politician':
             Thematic_Author['Politician']+=1
-        elif tmp[6] == 'Public Figure':
+        elif tmp[6] == 'Public Figure' or tmp[6]=='public figure':
             Thematic_Author['Public Figure']+=1
         elif tmp[6] == 'Scientist':
             Thematic_Author['Scientist']+=1
@@ -74,9 +78,9 @@ for row in textFile:
         elif tmp[6] == 'Teacher/scientist':
             Thematic_Author['Teacher/scientist']+=1
         else:
-            pass
+            print 'thematic else: ',tmp[6]
         ###############################################
-        if tmp[3] == 'A':
+        if tmp[3] == 'A' or tmp[3]=='A ':
             AgeCat_Author['A']+=1
         elif tmp[3] == 'B':
             AgeCat_Author['B']+=1
@@ -84,12 +88,14 @@ for row in textFile:
             AgeCat_Author['C']+=1
         elif tmp[3] == 'D':
             AgeCat_Author['D']+=1
-        elif tmp[3] == 'E':
+        elif tmp[3] == 'E' or tmp[3]=='E ':
             AgeCat_Author['E']+=1
         elif tmp[3] == 'F':
             AgeCat_Author['F']+=1
+        else:
+            print 'age cat else: ',tmp[3]
         #############################################
-        if tmp[7]=='US' or tmp[7]=='US ':
+        if tmp[7]=='US' or tmp[7]=='US ' or tmp[7]=='Us' or tmp[7] == 'us':
             AuthorsLang['US']+=1
         elif tmp[7]=='UK':
             AuthorsLang['UK']+=1
@@ -99,6 +105,8 @@ for row in textFile:
             AuthorsLang['NNS']+=1
         elif tmp[7]=='AUS':
             AuthorsLang['AUS']+=1
+        else:
+            print 'language else: ',tmp[7]
         #############################################
 
         tmp = row
