@@ -16,9 +16,11 @@
 
   * nltk.data
 
-    Installation
+    Installation (as root)
 
-    `[sudo] pip install -U nltk`
+    ```bash
+    $ pip install -U nltk
+    ```
 
 
 * Python Modules
@@ -29,9 +31,11 @@
 
   * [unicodecsv](https://pypi.python.org/pypi/unicodecsv)
 
-  * Installation:
+  * Installation (as root):
 
-    `[sudo] pip install arff decodes unicodecsv`
+    ```bash
+    $ pip install arff decodes unicodecsv
+    ```
 
 
 
@@ -61,12 +65,12 @@
 
 #### Author's exact age:
 
-* > 14
+* &gt;14
 
 
 #### Social Media:
 
-* Facebook\/Twitter
+* Facebook/Twitter
 
 #### Author's thematic area:
 
@@ -90,5 +94,4 @@ Based on facebook page categories etc
 
 #### Other infos
 
-* anything else about the author
-
+* anything infos else about the author
