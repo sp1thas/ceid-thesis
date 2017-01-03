@@ -1,5 +1,6 @@
 # Design and Implementation of a Methodology for the Automatic Identification of the User Geographic Idiom in a Social Media Text Corpus
----
+
+
 ## Abstract
 The rapid spread of social media creates more and more issues to investigate and study the scientific community. The sheer volume of information in itself is a challenge in terms of management. The information organized by topic, author, age, gender and geographical origin are examples of problems seeking solution.
 
